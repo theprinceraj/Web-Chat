@@ -5,8 +5,9 @@ const server = http.createServer(app);
 const { Server } = require('socket.io');
 const io = new Server(server);
 
-// Serve static files from the "scripts" and "style" directories
+// Serve static files from various directories
 app.use('/scripts', express.static(__dirname + '/scripts'));
+app.use('/scripts', express.static(__dirname));
 app.use('/style', express.static(__dirname + '/style'));
 
 app.get('/', (req, res) => {
@@ -14,13 +15,17 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', socket => {
-    console.log(`A user(${socket.id}) connected`);
+    io.emit('user connect', `User (${socket.id}) has connected`);
+
     socket.on('chat message', msg => {
-        console.log(`${socket.id} sent: ${msg}`);
+        if (msg.length > 100) {
+            socket.emit('messageError', 'Message should not exceed 100 characters.');
+            return;
+        }
         io.emit('chat message', msg);
     })
     socket.on('disconnect', () => {
-        console.log(`User(${socket.id}) has disconnected`);
+        io.emit('user disconnect', `User (${socket.id}) has disconnected`);
     });
 });
 

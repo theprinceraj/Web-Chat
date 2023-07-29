@@ -6,16 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Chat by Prince Raj</title>
     <link rel="stylesheet" href="style/style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
-    <ul id="messages"></ul>
+    <nav>
+        <h4>Web Chat by Prince Raj</h4>
+    </nav>
+    <ul id="messages">
+        <!-- Test List Items for Chat and Log -->
+        <!-- <li class="chat-component">
+            <div class="username-container">Test USER</div>
+            <i class='bx bxs-chevrons-right'></i>
+            <div class="msg-container">Test MSG</div>
+        </li>
+        <li class="log-component">User disconnected.</li> -->
+    </ul>
     <form id="form" action="">
         <input id="input" autocomplete="off" /><button>Send</button>
     </form>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="scripts/script.js"></script>
+    <script src="index.js"></script>
 </body>
 
 </html>

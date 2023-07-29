@@ -15,8 +15,9 @@ app.get('/', (req, res) => {
 
 io.on('connection', socket => {
     console.log(`A user(${socket.id}) connected`);
-    socket.on('chat message', message => {
-        console.log(`${socket.id} sent: ${message}`);
+    socket.on('chat message', msg => {
+        console.log(`${socket.id} sent: ${msg}`);
+        io.emit('chat message', msg);
     })
     socket.on('disconnect', () => {
         console.log(`User(${socket.id}) has disconnected`);

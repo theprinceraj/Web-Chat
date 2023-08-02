@@ -1,19 +1,23 @@
-// Function to fetch data from the API
-async function fetchRandomUser() {
-    try {
-        const response = await fetch('https://randomuser.me/api/');
-        const data = await response.json();
+var socket = io();
 
-        // Extract the full name from the API response
-        const { first, last } = data.results[0].name;
-        return `${first} ${last}`;
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
+let username;
+
+function setUsername() {
+    username = document.getElementById('usernameInput').value;
+    socket.emit('setUsername', username);
 }
 
+socket.on('usernameSet', username => {
+    console.log(username)
+    document.getElementById('username-form').style.display = 'none'; // hide username input overlay
+    document.getElementById('input').focus(); // focus on the message input field
+});
 
-var socket = io();
+socket.on('usernameTaken', username => {
+    alert(`Username ${username} is already taken.`);
+});
+// **************************************************************************** //
+
 
 var messages = document.getElementById('messages');
 var form = document.getElementById('form');
@@ -22,30 +26,30 @@ var input = document.getElementById('input');
 form.addEventListener('submit', function (e) {
     e.preventDefault();
     if (input.value) {
-        socket.emit('chat message', input.value);
+        socket.emit('chat message', input.value );
         input.value = '';
     }
 });
 
-
-socket.on('chat message', async function (msg) {
-    const randomName = await fetchRandomUser();
+// Handle incoming message
+socket.on('message', ({ username, message }) => {
     var item = document.createElement('li');
     item.classList.add('chat-component');
 
     var usernameContainer = document.createElement('div');
-    usernameContainer.textContent = randomName;
+    usernameContainer.textContent = username;
     usernameContainer.classList.add('username-container');
     item.appendChild(usernameContainer);
-    
-    
+
+
     var rightArrow = document.createElement('i');
     rightArrow.classList.add('bx');
     rightArrow.classList.add('bxs-chevrons-right');
     item.appendChild(rightArrow);
-    
+
     var msgContainer = document.createElement('div');
-    msgContainer.textContent = msg;
+    msgContainer.textContent = message;
+    console.log(message)
     msgContainer.classList.add('msg-container');
     item.appendChild(msgContainer);
 
@@ -62,9 +66,9 @@ socket.on('user disconnect', disconnectMsg => {
     var item = document.createElement('li');
     item.classList.add('log-component');
     item.textContent = disconnectMsg;
-    
+
     messages.appendChild(item);
-    
+
     window.scrollTo(0, document.body.scrollHeight);
 });
 
@@ -72,7 +76,7 @@ socket.on('user connect', connectMsg => {
     var item = document.createElement('li');
     item.classList.add('log-component');
     item.textContent = connectMsg;
-    
+
     messages.appendChild(item);
 
     window.scrollTo(0, document.body.scrollHeight);

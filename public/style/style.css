@@ -8,6 +8,7 @@
 body {
     padding-bottom: 3rem;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
 }
 
 nav {
@@ -95,4 +96,44 @@ nav {
     color: rgb(118, 118, 118);
     background-color: white;
     font-size: 0.8rem;
+}
+
+.overlay-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: greenyellow;
+    z-index: 1;
+}
+
+.overlay-menu button {
+    background-color: green;
+    border: 2px solid black;
+    color: white;
+    padding: 10px;
+    border-top-right-radius: 13px;
+    border-bottom-right-radius: 13px;
+    margin: 10px 0;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: all ease 0.2s;
+}
+.overlay-menu button:hover {
+    background-color: #299a0b;
+    border-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.overlay-menu input {
+    padding: 10px;
+    margin: 10px 0;
+    border-top-left-radius: 13px;
+    border-bottom-left-radius: 13px;
 }
